@@ -32,10 +32,11 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - api (api routes)
      * - login (login page)
      * - signup (signup page)
-     * - api (api routes)
+     * - test-roles (development only role switching page)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|\(auth\)).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|login|signup|test-roles).*)',
   ],
 };
