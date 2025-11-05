@@ -1,0 +1,33 @@
+# Next.js
+.next/
+out/
+
+# Node.js
+node_modules/
+*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Next.js Build Output
+.next/
+.turbo/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# OS
+.DS_Store
+
+# VSCode
+.vscode/
+
+# dotenv
+.env.local
+.env.*
+
+# npm package manager
+package-lock.json
