@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { toggleClassArchiveStatus } from "./[classId]/actions";
+import { toggleClassArchiveStatus } from "@/app/instructor/classes/[classId]/actions";
 import { toast } from "sonner";
 import { ClassFilter } from "./_components/class-filter";
 
