@@ -46,12 +46,29 @@ export async function addTeamMemberAction(teamId: string, studentId: string): Pr
     return { error: "You are not authorized to manage members in this team." };
   }
 
-  // Check if student is already in a team within this class
+  // Fetch all team_ids for the current class
+  const { data: classTeams, error: classTeamsError } = await supabase
+    .from("teams")
+    .select("id")
+    .eq("class_id", classId);
+
+  if (classTeamsError) {
+    console.error("Error fetching teams for class:", classTeamsError);
+    return { error: "Failed to check for existing team membership." };
+  }
+
+  const classTeamIds = classTeams.map(team => team.id);
+
   const { data: existingTeamMember, error: existingMemberError } = await supabase
     .from("team_members")
     .select("id")
     .eq("user_id", studentId)
-    .in("team_id", supabase.from("teams").select("id").eq("class_id", classId));
+    .in("team_id", classTeamIds);
+
+  if (existingMemberError) {
+    console.error("Error checking for existing team member:", existingMemberError);
+    return { error: "Failed to check for existing team membership." };
+  }
 
   if (existingTeamMember && existingTeamMember.length > 0) {
     return { error: "Student is already in a team within this class." };
