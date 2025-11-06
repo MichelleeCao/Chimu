@@ -35,7 +35,7 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
   // Fetch team details
   const { data: team, error: teamError } = await supabase
     .from("teams")
-    .select("id, name, classes(name, quarter, year, section)")
+    .select("id, name, class_id, classes!id(name, quarter, year, section)")
     .eq("id", teamId)
     .eq("class_id", classId)
     .single();
