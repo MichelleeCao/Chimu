@@ -3,8 +3,14 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function middleware(request: NextRequest) {
   const supabase = createClient();
+  const response = NextResponse.next();
 
-  const { data, error } = await supabase.auth.getSession();
+  const supabaseMiddleware = createClient({
+    request,
+    response,
+  });
+
+  const { data, error } = await supabaseMiddleware.auth.getSession();
 
   if (error) {
     console.error("Supabase authentication error:", error);
@@ -22,7 +28,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
