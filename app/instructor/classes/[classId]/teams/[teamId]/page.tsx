@@ -24,6 +24,12 @@ interface TeamData {
   classes: ClassDetails[];
 }
 
+interface UserPublicDetails {
+  id: string;
+  name: string | null;
+  email: string | null;
+}
+
 export default async function ManageTeamPage({ params }: { params: { classId: string; teamId: string } }) {
   const { classId, teamId } = params;
   const supabase = createClient();
@@ -86,9 +92,10 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
   }
 
   const currentMemberIds = new Set(teamMembers.map(member => member.user_id));
-  const studentsNotInTeam = availableStudents.filter(student => 
-    student.users && !currentMemberIds.has(student.user_id)
-  ).map(student => student.users);
+  const studentsNotInTeam: UserPublicDetails[] = availableStudents
+    .filter((student): student is { user_id: string; users: UserPublicDetails } => student.users !== null)
+    .filter(student => !currentMemberIds.has(student.user_id))
+    .map(student => student.users);
 
   // Fetch all other teams in the same class for moving members
   const { data: otherTeams, error: otherTeamsError } = await supabase
