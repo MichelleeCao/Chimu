@@ -9,12 +9,8 @@ export const defaultSurveyQuestions: { question_text: string; type: 'likert' }[]
 ];
 
 export const createSurveySchema = z.object({
-  releaseDate: z.date({
-    required_error: "A release date is required.",
-  }),
-  dueDate: z.date({
-    required_error: "A due date is required.",
-  }),
+  releaseDate: z.date(),
+  dueDate: z.date(),
   questions: z.array(z.object({
     question_text: z.string().min(1),
     type: z.literal("likert"),
