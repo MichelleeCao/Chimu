@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { type ActionResponse } from "@/types/actions";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createSurveySchema } from "./page";
+import { createSurveySchema } from "./schema";
 
 export async function createSurveyAction(classId: string, values: z.infer<typeof createSurveySchema>): Promise<ActionResponse> {
   const supabase = createClient();

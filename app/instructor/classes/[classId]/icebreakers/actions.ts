@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { type ActionResponse } from "@/types/actions";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { icebreakerQuestionSchema } from "./page";
+import { icebreakerQuestionSchema } from "./schema";
 
 async function isAuthorizedToManageIcebreakers(supabase: ReturnType<typeof createClient>, userId: string, classId: string): Promise<boolean> {
   const { data: roleData, error: roleError } = await supabase

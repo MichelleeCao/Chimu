@@ -22,13 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { addIcebreakerQuestionAction, removeIcebreakerQuestionAction } from "./actions";
-
-export const icebreakerQuestionSchema = z.object({
-  questionText: z.string().min(1, "Question text is required").max(255, "Question text must be at most 255 characters"),
-  category: z.string().optional(),
-});
-
-type IcebreakerQuestionFormValues = z.infer<typeof icebreakerQuestionSchema>;
+import { icebreakerQuestionSchema, type IcebreakerQuestionFormValues } from "./schema";
 
 const defaultIcebreakerQuestions = [
   { question_text: "What is your favorite holiday tradition?", category: "fun facts" },
