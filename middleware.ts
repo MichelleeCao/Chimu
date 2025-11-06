@@ -29,12 +29,13 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * This ensures the middleware runs on all other pages to enforce authentication.
+     * - login (login page)
+     * - signup (signup page)
+     * - api (api routes)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|\(auth\)).*)',
   ],
 };
