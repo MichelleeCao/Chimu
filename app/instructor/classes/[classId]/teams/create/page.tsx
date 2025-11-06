@@ -11,12 +11,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { createTeamAction } from "./actions";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-
-export const createTeamSchema = z.object({
-  name: z.string().min(1, "Team name is required").max(100, "Team name must be at most 100 characters"),
-});
-
-type CreateTeamFormValues = z.infer<typeof createTeamSchema>;
+import { createTeamSchema, CreateTeamFormValues } from "./schema";
 
 export default function CreateTeamPage({ params }: { params: { classId: string } }) {
   const classId = params.classId;
