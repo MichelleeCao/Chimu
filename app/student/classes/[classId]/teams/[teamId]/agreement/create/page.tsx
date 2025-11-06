@@ -27,7 +27,7 @@ import { createUpdateTeamAgreementAction, signTeamAgreementAction } from "./acti
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-const teamAgreementSchema = z.object({
+export const teamAgreementSchema = z.object({
   content: z.string().min(10, "Agreement content must be at least 10 characters."),
 });
 

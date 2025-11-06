@@ -27,15 +27,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Card } from "@/components/ui/card";
 
-const defaultSurveyQuestions = [
-  { question_text: "Members provide timely response to communications", type: "likert" },
-  { question_text: "Members are present at scheduled meetings", type: "likert" },
-  { question_text: "Members have equitable workload distribution", type: "likert" },
-  { question_text: "Our team has good morale and energy", type: "likert" },
-  { question_text: "Our team is making good progress on our project", type: "likert" },
-];
-
-const createSurveySchema = z.object({
+export const createSurveySchema = z.object({
   releaseDate: z.date({
     required_error: "A release date is required.",
   }),

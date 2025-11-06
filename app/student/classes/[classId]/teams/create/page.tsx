@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { createStudentTeamAction } from "./actions";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 
-const createTeamSchema = z.object({
+export const createTeamSchema = z.object({
   name: z.string().min(1, "Team name is required").max(100, "Team name must be at most 100 characters"),
 });
 

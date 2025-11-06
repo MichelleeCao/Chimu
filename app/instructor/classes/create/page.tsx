@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-const createClassSchema = z.object({
+export const createClassSchema = z.object({
   name: z.string().min(1, "Class name is required").max(100, "Class name must be at most 100 characters"),
   quarter: z.string().min(1, "Quarter is required").max(50, "Quarter must be at most 50 characters"),
   section: z.string().min(1, "Section is required").max(50, "Section must be at most 50 characters"),

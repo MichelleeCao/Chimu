@@ -31,7 +31,7 @@ export default function TestRolesPage() {
     );
 
     return () => {
-      authListener?.unsubscribe();
+      authListener?.subscription?.unsubscribe();
     };
   }, [supabase, router]);
 

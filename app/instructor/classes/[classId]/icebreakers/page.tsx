@@ -23,7 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { addIcebreakerQuestionAction, removeIcebreakerQuestionAction } from "./actions";
 
-const icebreakerQuestionSchema = z.object({
+export const icebreakerQuestionSchema = z.object({
   questionText: z.string().min(1, "Question text is required").max(255, "Question text must be at most 255 characters"),
   category: z.string().optional(),
 });
