@@ -36,6 +36,6 @@ export const config = {
      * - signup (signup page)
      * - api (api routes)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|\(auth\)).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|(?:auth)).*)',
   ],
 };
