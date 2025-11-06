@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ClipboardCopyIcon } from "@radix-ui/react-icons";
-import { signTeamAgreementAction } from "../agreement/create/actions";
+import { signTeamAgreementAction } from "@/app/student/classes/[classId]/teams/[teamId]/agreement/create/actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
