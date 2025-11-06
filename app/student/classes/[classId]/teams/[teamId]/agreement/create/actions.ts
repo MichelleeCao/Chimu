@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { type ActionResponse } from "@/types/actions";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { teamAgreementSchema } from "./page";
+import { teamAgreementSchema } from "./schema";
 
 async function isAuthorizedToManageAgreement(supabase: ReturnType<typeof createClient>, userId: string, classId: string, teamId: string): Promise<boolean> {
   // For students, they must be in the team to manage the agreement

@@ -13,6 +13,7 @@ import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { teamAgreementSchema, TeamAgreementFormValues } from "./schema";
 import {
   Form,
   FormControl,
@@ -26,12 +27,6 @@ import { Badge } from "@/components/ui/badge";
 import { createUpdateTeamAgreementAction, signTeamAgreementAction } from "./actions";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
-export const teamAgreementSchema = z.object({
-  content: z.string().min(10, "Agreement content must be at least 10 characters."),
-});
-
-type TeamAgreementFormValues = z.infer<typeof teamAgreementSchema>;
 
 export default function CreateEditTeamAgreementPage({ params }: { params: { classId: string; teamId: string } }) {
   const classId = params.classId;
