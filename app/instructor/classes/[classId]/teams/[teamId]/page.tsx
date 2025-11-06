@@ -35,10 +35,12 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
   // Fetch team details
   const { data: team, error: teamError } = await supabase
     .from("teams")
-    .select("id, name, class_id, classes!id(name, quarter, year, section)")
+    .select("id, name, class_id, classes(name, quarter, year, section)")
     .eq("id", teamId)
     .eq("class_id", classId)
     .single();
+
+  const classDetails = (team?.classes && Array.isArray(team.classes)) ? team.classes[0] : team?.classes;
 
   if (teamError || !team) {
     console.error("Error fetching team details:", teamError);
@@ -119,7 +121,7 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-4xl font-bold">Manage Team: {team.name}</h1>
-            <p className="text-gray-600">Class: {team.classes?.name} ({team.classes?.quarter} {team.classes?.year} - {team.classes?.section})</p>
+            <p className="text-gray-600">Class: {classDetails?.name} ({classDetails?.quarter} {classDetails?.year} - {classDetails?.section})</p>
           </div>
           <Button asChild variant="outline">
             <Link href={`/instructor/classes/${classId}`}>Back to Class</Link>
