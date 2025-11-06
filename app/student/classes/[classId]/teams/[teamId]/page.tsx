@@ -29,7 +29,7 @@ export default async function StudentTeamDashboardPage({ params }: { params: { c
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   // Verify user is a member of this team in this class

@@ -37,7 +37,7 @@ export default function ProfilePage() {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push("/login");
+        router.push("/auth/login");
         return;
       }
       setUser(user);

@@ -16,7 +16,7 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   // Verify user is an instructor or TA for the class

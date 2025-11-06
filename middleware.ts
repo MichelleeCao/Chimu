@@ -13,12 +13,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect unauthenticated users to the login page, unless they are already on an auth page
-  if (!data.session && !request.nextUrl.pathname.startsWith("/login") && !request.nextUrl.pathname.startsWith("/signup")) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (!data.session && !request.nextUrl.pathname.startsWith("/auth/login") && !request.nextUrl.pathname.startsWith("/auth/signup")) {
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
   // For authenticated users, if they are on a login/signup page, redirect to home
-  if (data.session && (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/signup"))) {
+  if (data.session && (request.nextUrl.pathname.startsWith("/auth/login") || request.nextUrl.pathname.startsWith("/auth/signup"))) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -27,6 +27,16 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|login|signup|test-roles).*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - api (api routes)
+     * - login (login page)
+     * - signup (signup page)
+     * - test-roles (development only role switching page)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|auth/login|auth/signup|auth/test-roles).*)',
   ],
 };

@@ -13,7 +13,7 @@ export default async function BrowseTeamsPage({ params }: { params: { classId: s
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   // Verify user is a student in this class

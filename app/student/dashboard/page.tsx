@@ -14,7 +14,7 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   const filterStatus = searchParams.status || "active"; // Default to active
