@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { type ActionResponse } from "@/types/actions";
-import { createClassSchema } from "./page";
+import { createClassSchema } from "./schema";
 import { z } from "zod";
 
 // Helper to generate a unique alphanumeric class code
