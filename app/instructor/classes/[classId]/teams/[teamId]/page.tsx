@@ -10,6 +10,20 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+interface ClassDetails {
+  name: string;
+  quarter: string;
+  year: number;
+  section: string;
+}
+
+interface TeamData {
+  id: string;
+  name: string;
+  class_id: string;
+  classes: ClassDetails[];
+}
+
 export default async function ManageTeamPage({ params }: { params: { classId: string; teamId: string } }) {
   const { classId, teamId } = params;
   const supabase = createClient();
@@ -40,12 +54,13 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
     .eq("class_id", classId)
     .single();
 
-  const classDetails = (team?.classes && Array.isArray(team.classes)) ? team.classes[0] : team?.classes;
-
   if (teamError || !team) {
     console.error("Error fetching team details:", teamError);
     return <p className="text-red-500">Team not found or does not belong to this class.</p>;
   }
+
+  const typedTeam = team as TeamData;
+  const classDetails = typedTeam.classes.length > 0 ? typedTeam.classes[0] : undefined;
 
   // Fetch current team members
   const { data: teamMembers, error: teamMembersError } = await supabase
