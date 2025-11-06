@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const defaultSurveyQuestions = [
+export const defaultSurveyQuestions: { question_text: string; type: 'likert' }[] = [
   { question_text: "Members provide timely response to communications", type: "likert" },
   { question_text: "Members are present at scheduled meetings", type: "likert" },
   { question_text: "Members have equitable workload distribution", type: "likert" },
