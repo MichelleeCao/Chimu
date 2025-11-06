@@ -3,16 +3,18 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { toggleClassArchiveStatus } from "@/app/instructor/classes/[classId]/actions";
+import { toggleClassArchiveStatus } from "./[classId]/actions";
 import { toast } from "sonner";
-import { ClassFilter } from "./_components/class-filter";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 
 export default async function InstructorDashboardPage({ searchParams }: { searchParams: { status?: string } }) {
   const supabase = createClient();
+  const router = useRouter();
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   const filterStatus = searchParams.status || "active"; // Default to active
@@ -22,8 +24,6 @@ export default async function InstructorDashboardPage({ searchParams }: { search
     query = query.eq("archived", false);
   } else if (filterStatus === "archived") {
     query = query.eq("archived", true);
-  } else if (filterStatus === "all") {
-    // No filter needed, fetch all
   }
 
   const { data: classes, error } = await query.order("created_at", { ascending: false });
@@ -34,7 +34,6 @@ export default async function InstructorDashboardPage({ searchParams }: { search
   }
 
   const handleToggleArchive = async (classId: string, currentStatus: boolean) => {
-    "use server";
     const result = await toggleClassArchiveStatus(classId, currentStatus);
     if (result.error) {
       toast.error(typeof result.error === "string" ? result.error : "Failed to update class status.");
@@ -48,7 +47,25 @@ export default async function InstructorDashboardPage({ searchParams }: { search
       <div className="container mx-auto py-8">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-0">Instructor Dashboard</h1>
-          <ClassFilter currentStatus={filterStatus} />
+          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
+            <Select value={filterStatus} onValueChange={(value) => {
+              const newSearchParams = new URLSearchParams(searchParams as Record<string, string>);
+              newSearchParams.set("status", value);
+              router.push(`/instructor/dashboard?${newSearchParams.toString()}`);
+            }}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active Classes</SelectItem>
+                <SelectItem value="archived">Archived Classes</SelectItem>
+                <SelectItem value="all">All Classes</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button asChild className="w-full sm:w-auto">
+              <Link href="/instructor/classes/create">Create New Class</Link>
+            </Button>
+          </div>
         </div>
 
         {classes && classes.length > 0 ? (

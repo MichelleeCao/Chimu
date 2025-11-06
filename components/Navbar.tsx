@@ -19,7 +19,7 @@ function Navbar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    redirect("/auth/login"); // Redirect to login page after logout
+    redirect("/login"); // Redirect to login page after logout
   };
 
   return (

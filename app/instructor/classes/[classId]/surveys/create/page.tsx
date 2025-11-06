@@ -26,7 +26,29 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Card } from "@/components/ui/card";
-import { createSurveySchema, CreateSurveyFormValues, defaultSurveyQuestions } from "./schema";
+
+const defaultSurveyQuestions = [
+  { question_text: "Members provide timely response to communications", type: "likert" },
+  { question_text: "Members are present at scheduled meetings", type: "likert" },
+  { question_text: "Members have equitable workload distribution", type: "likert" },
+  { question_text: "Our team has good morale and energy", type: "likert" },
+  { question_text: "Our team is making good progress on our project", type: "likert" },
+];
+
+const createSurveySchema = z.object({
+  releaseDate: z.date({
+    required_error: "A release date is required.",
+  }),
+  dueDate: z.date({
+    required_error: "A due date is required.",
+  }),
+  questions: z.array(z.object({
+    question_text: z.string().min(1),
+    type: z.literal("likert"),
+  })),
+});
+
+type CreateSurveyFormValues = z.infer<typeof createSurveySchema>;
 
 export default function CreateSurveyPage({ params }: { params: { classId: string } }) {
   const classId = params.classId;

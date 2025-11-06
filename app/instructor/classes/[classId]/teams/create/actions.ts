@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { type ActionResponse } from "@/types/actions";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createTeamSchema } from "./schema";
+import { createTeamSchema } from "./page";
 
 export async function createTeamAction(classId: string, values: z.infer<typeof createTeamSchema>): Promise<ActionResponse<{ teamId: string }>> {
   const supabase = createClient();

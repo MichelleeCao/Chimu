@@ -33,7 +33,7 @@ export default function CompleteSurveyPage({ params }: { params: { classId: stri
       setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push("/auth/login");
+        router.push("/login");
         return;
       }
 

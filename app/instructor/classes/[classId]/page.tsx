@@ -18,7 +18,7 @@ export default async function ClassDetailsPage({ params }: { params: { classId: 
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   // Fetch class details

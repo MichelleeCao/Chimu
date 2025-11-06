@@ -10,33 +10,13 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface ClassDetails {
-  name: string;
-  quarter: string;
-  year: number;
-  section: string;
-}
-
-interface TeamData {
-  id: string;
-  name: string;
-  class_id: string;
-  classes: ClassDetails[];
-}
-
-interface UserPublicDetails {
-  id: string;
-  name: string | null;
-  email: string | null;
-}
-
 export default async function ManageTeamPage({ params }: { params: { classId: string; teamId: string } }) {
   const { classId, teamId } = params;
   const supabase = createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   // Verify user is an instructor or TA for the class
@@ -55,7 +35,7 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
   // Fetch team details
   const { data: team, error: teamError } = await supabase
     .from("teams")
-    .select("id, name, class_id, classes(name, quarter, year, section)")
+    .select("id, name, classes(name, quarter, year, section)")
     .eq("id", teamId)
     .eq("class_id", classId)
     .single();
@@ -64,9 +44,6 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
     console.error("Error fetching team details:", teamError);
     return <p className="text-red-500">Team not found or does not belong to this class.</p>;
   }
-
-  const typedTeam = team as TeamData;
-  const classDetails = typedTeam.classes.length > 0 ? typedTeam.classes[0] : undefined;
 
   // Fetch current team members
   const { data: teamMembers, error: teamMembersError } = await supabase
@@ -92,10 +69,9 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
   }
 
   const currentMemberIds = new Set(teamMembers.map(member => member.user_id));
-  const studentsNotInTeam: UserPublicDetails[] = availableStudents
-    .filter((student): student is { user_id: string; users: UserPublicDetails } => student.users !== null)
-    .filter(student => !currentMemberIds.has(student.user_id))
-    .map(student => student.users);
+  const studentsNotInTeam = availableStudents.filter(student => 
+    student.users && !currentMemberIds.has(student.user_id)
+  ).map(student => student.users);
 
   // Fetch all other teams in the same class for moving members
   const { data: otherTeams, error: otherTeamsError } = await supabase
@@ -143,7 +119,7 @@ export default async function ManageTeamPage({ params }: { params: { classId: st
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-4xl font-bold">Manage Team: {team.name}</h1>
-            <p className="text-gray-600">Class: {classDetails?.name} ({classDetails?.quarter} {classDetails?.year} - {classDetails?.section})</p>
+            <p className="text-gray-600">Class: {team.classes?.name} ({team.classes?.quarter} {team.classes?.year} - {team.classes?.section})</p>
           </div>
           <Button asChild variant="outline">
             <Link href={`/instructor/classes/${classId}`}>Back to Class</Link>

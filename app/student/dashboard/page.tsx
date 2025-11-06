@@ -4,15 +4,17 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { StudentDashboardFilters } from "./_components/student-dashboard-filters"; // Import the new client component
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 import { EnrolledClass } from "@/types/supabase";
 
 export default async function StudentDashboardPage({ searchParams }: { searchParams: { status?: string } }) {
   const supabase = createClient();
+  const router = useRouter();
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   const filterStatus = searchParams.status || "active"; // Default to active
@@ -45,8 +47,6 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     enrolledClassesQuery = enrolledClassesQuery.eq("classes.archived", false);
   } else if (filterStatus === "archived") {
     enrolledClassesQuery = enrolledClassesQuery.eq("classes.archived", true);
-  } else if (filterStatus === "all") {
-    // No filter needed, fetch all
   }
 
   const { data: rawEnrolledClasses, error } = await enrolledClassesQuery.order("created_at", { foreignTable: "classes", ascending: false });
@@ -108,7 +108,25 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
               {(totalPendingSurveys + totalPendingIcebreakers + totalPendingAgreements === 0) && <span className="ml-2 text-green-600">No pending items!</span>}
             </p>
           </div>
-          <StudentDashboardFilters currentStatus={filterStatus} />
+          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full md:w-auto mt-4 md:mt-0">
+            <Select value={filterStatus} onValueChange={(value) => {
+              const newSearchParams = new URLSearchParams(searchParams as Record<string, string>);
+              newSearchParams.set("status", value);
+              router.push(`/student/dashboard?${newSearchParams.toString()}`);
+            }}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active Classes</SelectItem>
+                <SelectItem value="archived">Archived Classes</SelectItem>
+                <SelectItem value="all">All Classes</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button asChild className="w-full sm:w-auto">
+              <Link href="/student/join-class">Join New Class</Link>
+            </Button>
+          </div>
         </div>
 
         {classesWithPending && classesWithPending.length > 0 ? (
